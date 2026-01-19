@@ -69,176 +69,176 @@
 }
 
 @font-face {
-  font-family: 'Archivo-Thin';
+  font-family: 'Archivo';
   src:
     local('Archivo Thin'),
     local('Archivo-Thin'),
-    url('../../assets/fonts/Archivo/Archivo-Thin.ttf') format('truetype');
+    url('../../assets/fonts/Archivo/static/Archivo-Thin.ttf') format('truetype');
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Archivo-ThinItalic';
+  font-family: 'Archivo';
   src:
     local('Archivo Thin Italic'),
     local('Archivo-ThinItalic'),
-    url('../../assets/fonts/Archivo/Archivo-ThinItalic.ttf') format('truetype');
+    url('../../assets/fonts/Archivo/static/Archivo-ThinItalic.ttf') format('truetype');
   font-weight: 100;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Archivo-Light';
+  font-family: 'Archivo';
   src:
     local('Archivo Light'),
     local('Archivo-Light'),
-    url('../../assets/fonts/Archivo/Archivo-Light.ttf') format('truetype');
+    url('../../assets/fonts/Archivo/static/Archivo-Light.ttf') format('truetype');
   font-weight: 200;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Archivo-LightItalic';
+  font-family: 'Archivo';
   src:
     local('Archivo Light Italic'),
     local('Archivo-LightItalic'),
-    url('../../assets/fonts/Archivo/Archivo-LightItalic.ttf') format('truetype');
+    url('../../assets/fonts/Archivo/static/Archivo-LightItalic.ttf') format('truetype');
   font-weight: 200;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Archivo-Regular';
+  font-family: 'Archivo';
   src:
     local('Archivo Regular'),
     local('Archivo-Regular'),
-    url('../../assets/fonts/Archivo/Archivo-Regular.ttf') format('truetype');
+    url('../../assets/fonts/Archivo/static/Archivo-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Archivo-RegularItalic';
+  font-family: 'Archivo';
   src:
     local('Archivo Regular Italic'),
     local('Archivo-RegularItalic'),
-    url('../../assets/fonts/Archivo/Archivo-RegularItalic.ttf') format('truetype');
+    url('../../assets/fonts/Archivo/static/Archivo-RegularItalic.ttf') format('truetype');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Archivo-Medium';
+  font-family: 'Archivo';
   src:
     local('Archivo Medium'),
     local('Archivo-Medium'),
-    url('../../assets/fonts/Archivo/Archivo-Medium.ttf') format('truetype');
+    url('../../assets/fonts/Archivo/static/Archivo-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Archivo-MediumItalic';
+  font-family: 'Archivo';
   src:
     local('Archivo Medium Italic'),
     local('Archivo-MediumItalic'),
-    url('../../assets/fonts/Archivo/Archivo-MediumItalic.ttf') format('truetype');
+    url('../../assets/fonts/Archivo/static/Archivo-MediumItalic.ttf') format('truetype');
   font-weight: 500;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Archivo-Bold';
+  font-family: 'Archivo';
   src:
     local('Archivo Bold'),
     local('Archivo-Bold'),
-    url('../../assets/fonts/Archivo/Archivo-Bold.ttf') format('truetype');
+    url('../../assets/fonts/Archivo/static/Archivo-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Archivo-BoldItalic';
+  font-family: 'Archivo';
   src:
     local('Archivo Bold Italic'),
     local('Archivo-BoldItalic'),
-    url('../../assets/fonts/Archivo/Archivo-BoldItalic.ttf') format('truetype');
+    url('../../assets/fonts/Archivo/static/Archivo-BoldItalic.ttf') format('truetype');
   font-weight: 700;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Archivo-SemiBold';
+  font-family: 'Archivo';
   src:
     local('Archivo Semi Bold'),
     local('Archivo-SemiBold'),
-    url('../../assets/fonts/Archivo/Archivo-SemiBold.ttf') format('truetype');
+    url('../../assets/fonts/Archivo/static/Archivo-SemiBold.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Archivo-SemiBoldItalic';
+  font-family: 'Archivo';
   src:
     local('Archivo Semi Bold Italic'),
     local('Archivo-SemiBoldItalic'),
-    url('../../assets/fonts/Archivo/Archivo-SemiBoldItalic.ttf') format('truetype');
+    url('../../assets/fonts/Archivo/static/Archivo-SemiBoldItalic.ttf') format('truetype');
   font-weight: 600;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {    
-  font-family: 'Archivo-Bold';
+    font-family: 'Archivo';
   src:
     local('Archivo Bold'),
     local('Archivo-Bold'),
-    url('../../assets/fonts/Archivo/Archivo-Bold.ttf') format('truetype');
+    url('../../assets/fonts/Archivo/static/Archivo-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {    
-  font-family: 'Archivo-BoldItalic';
+  font-family: 'Archivo';
   src:
     local('Archivo Bold Italic'),
     local('Archivo-BoldItalic'),
-    url('../../assets/fonts/Archivo/Archivo-BoldItalic.ttf') format('truetype');
+    url('../../assets/fonts/Archivo/static/Archivo-BoldItalic.ttf') format('truetype');
   font-weight: 700;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {    
-  font-family: 'Archivo-Black ';
+  font-family: 'Archivo';
   src:
     local('Archivo Black'),
     local('Archivo-Black'),
-    url('../../assets/fonts/Archivo/Archivo-Black.ttf') format('truetype');
+    url('../../assets/fonts/Archivo/static/Archivo-Black.ttf') format('truetype');
   font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {    
-  font-family: 'Archivo-BlackItalic';
+  font-family: 'Archivo';
   src:
     local('Archivo Black Italic'),
     local('Archivo-BlackItalic'),
-    url('../../assets/fonts/Archivo/Archivo-BlackItalic.ttf') format('truetype');
+    url('../../assets/fonts/Archivo/static/Archivo-BlackItalic.ttf') format('truetype');
   font-weight: 900;
   font-style: italic;
   font-display: swap;
