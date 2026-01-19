@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { black, Poppins } from '../abstracts/colors'
+import { Archivo, black } from '../abstracts/colors'
 
 export const normalize = css`
   :root {
@@ -33,7 +33,7 @@ export const normalize = css`
     direction: ltr;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: ${Poppins};
+    font-family: ${Archivo};
   }
 
   main {
@@ -264,7 +264,7 @@ export const normalize = css`
   }
 
   p {
-    font-family: ${Poppins};
+    font-family: ${Archivo};
     display: block;
     margin-block-start: 0;
     margin-block-end: 0;
@@ -278,7 +278,7 @@ export const normalize = css`
   h6 {
     margin: 0;
     padding: 0;
-    font-family: ${Poppins};
+    font-family: ${Archivo};
   }
 
   /* Remove list styles on ul, ol */

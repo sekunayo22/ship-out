@@ -1,5 +1,6 @@
 //fonts
-export const Poppins = 'Poppins'
+export const ClashDisplay = 'ClashDisplay'
+export const Archivo = 'Archivo'
 
 //colors
 export const black = '#000000';

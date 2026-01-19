@@ -1,10 +1,13 @@
-import { LoaderContainer } from './styles'
+import { LoaderContainer, LoaderContent, LoaderText } from './styles'
 import Icon from '../Icon'
 
 const Loader = () => {
   return (
     <LoaderContainer>
-        <Icon icon="logo" />
+        <LoaderContent>
+            <Icon icon="logo" />
+            <LoaderText>SHIP OUT</LoaderText>
+        </LoaderContent>
     </LoaderContainer>
   )
 }
