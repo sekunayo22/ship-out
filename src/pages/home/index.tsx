@@ -11,6 +11,7 @@ import {
   TableSectionContainer,
   TableSectionHeader,
   TableSectionHeaderTitle,
+  CardContainer,
 } from "./styles"
 import Layout from "../../components/Layout"
 import { Bar, BarChart, CartesianGrid, Cell, Label, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
@@ -21,6 +22,7 @@ import { CustomLegend } from "./CustomLegend";
 import { Archivo } from "../../styles/abstracts/colors";
 import Table from "../../components/Table";
 import Button from "../../components/Button";
+import { Card } from "../../components/Card";
 
 export const Home = () => {
   const teuAllocations = useMemo(() => {
@@ -74,6 +76,11 @@ export const Home = () => {
             <MainHeaderDescription>Hello Admin, how are you doing today?</MainHeaderDescription>
           </MainHeader>
         </MainHeaderContainer>
+        <CardContainer>
+          <Card title="Total Vessels" description="50.8K" percentage={{ value: 28.4, status: 'up' }} />
+          <Card title="Total Bookings" description="23.6K" percentage={{ value: 12.6, status: 'down' }} />
+          <Card title="Total TEU Allocated" description="736" percentage={{ value: 3.1, status: 'up' }} />
+        </CardContainer>
               <BarChart barGap={16} style={{ width: '100%', maxHeight: '70vh', aspectRatio: 1.618 }} responsive data={teuAllocations}>
                 <CartesianGrid vertical={false} />
                 <XAxis fontFamily={Archivo} fontSize={15} color="#8D9092" dataKey="vessel" />

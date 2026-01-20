@@ -11,3 +11,5 @@ export type IconNames =
 | 'infoDelete'
 | 'upload'
 | 'filter'
+| 'arrowUp'
+| 'arrowDown'

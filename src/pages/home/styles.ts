@@ -9,6 +9,7 @@ export const HomeContainer = styled.div`
   min-height: 0;
   overflow-x: hidden;
   overflow-y: auto;
+  padding-right: 24px;
 `
 
 export const MainHeader = styled.div`
@@ -105,3 +106,10 @@ font-style: normal;
 font-weight: 500;
 line-height: 20px; 
 `;
+
+export const CardContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 48px;  
+`
