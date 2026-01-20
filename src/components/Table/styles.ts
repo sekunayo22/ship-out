@@ -107,6 +107,7 @@ export const MainTable = styled.div`
 
 export const ButtonActions = styled.div`
   display: flex;
+  justify-content: flex-end;
   align-items: center;
   gap: 12px;
 `

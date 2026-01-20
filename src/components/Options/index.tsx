@@ -8,7 +8,7 @@ import { useClickOutside } from "../../hooks/useClickOutside"
 
 interface OptionsProps {
     handleDelete: () => void
-    handleEdit: () => void
+    handleEdit?: () => void
     handleView: () => void
 }
 
@@ -38,8 +38,9 @@ export const Options = ({ handleDelete, handleEdit, handleView }: OptionsProps) 
                 </OptionsDropdownItemIcon>
                 View
               </OptionsDropdownItem>
-              <OptionsDropdownItem onClick={() => {
-                handleEdit()
+              {handleEdit && (
+                <OptionsDropdownItem onClick={() => {
+                handleEdit?.()
                 setIsOpen(false)
               }}>
                 <OptionsDropdownItemIcon>
@@ -47,6 +48,7 @@ export const Options = ({ handleDelete, handleEdit, handleView }: OptionsProps) 
                 </OptionsDropdownItemIcon>
                 Edit
               </OptionsDropdownItem>
+              )}
               <OptionsDropdownItem className={css({
                 color: `${red01} !important`,
                 '& svg path': {

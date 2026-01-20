@@ -20,6 +20,9 @@ import { CreateNewVessel } from "./CreateNewVessel"
 import { ViewModal } from "../../components/ViewModal"
 import { EditVesselModal } from "./EditNewVessel"
 import { DeleteModal } from "../../components/DeleteModal"
+import type { IconNames } from "../../assets/icons/iconTypes"
+import type { ButtonVariant } from "../../types/component"
+import { css } from "@emotion/css"
 
 export const Vessels = () => {
   const [page, setPage] = useState(0)
@@ -111,6 +114,28 @@ export const Vessels = () => {
     },
   ], [handleToggleAllVessels, handleVesselCheck, selectedVessels])
 
+  const buttonActions = useMemo(() => [
+    {
+      label: 'Filters',
+      handleClick: () => {
+        console.log('Filters')
+      },
+      icon: 'filter' as IconNames,
+      variant: 'secondary' as ButtonVariant,  
+      className: css({
+        border: 'none !important',
+      }),
+    },
+    {
+      label: 'Export All',
+      handleClick: () => {
+        console.log('Export All')
+      },
+      icon: 'upload' as IconNames,
+      variant: 'secondary' as ButtonVariant,
+    },
+  ], [setOpenDeleteModal])
+
   const totalPages = Math.max(1, Math.ceil(vessels.length / pageSize))
 
   useTableAutoPageSize(tableSectionRef, setPageSize)
@@ -143,6 +168,7 @@ export const Vessels = () => {
             pageSize={pageSize}
             handlePageChange={nextPage => setPage(Math.max(0, Math.min(nextPage, totalPages - 1)))}
             selectedItems={selectedVessels}
+            buttonActions={buttonActions}
           />
         </TableSection>
       </VesselsContainer>

@@ -9,3 +9,5 @@ export type IconNames =
 | 'delete'
 | 'close'
 | 'infoDelete'
+| 'upload'
+| 'filter'

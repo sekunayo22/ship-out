@@ -51,6 +51,7 @@ interface TableProps<TData extends RowData> {
     handleClick: () => void
     icon?: IconNames
     variant?: ButtonVariant
+    className?: string
   }[]
   handlePageChange?: (page: number) => void
   components?: React.ReactNode
@@ -87,10 +88,10 @@ const Table = <TData extends RowData>({
           <ButtonActions>
             {buttonActions?.map(option => (
               <Button
-                className={css({
-                  width: 'fit-content !important',
-                  '& svg path': { fill: 'none !important' },
-                })}
+                className={css(option.className,  css({
+                    width: 'fit-content !important',
+                    '& svg path': { fill: 'none !important' },
+                  }))}
                 iconName={option.icon}
                 iconPosition='left'
                 key={option.label}

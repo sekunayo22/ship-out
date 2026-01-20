@@ -23,7 +23,7 @@ export const StyledButton = styled.button<{
   line-height: 100%; 
   cursor: ${({ loading }) => (loading ? 'not-allowed' : 'pointer')};
   border: ${({ variant, loading }) =>
-    getButtonProps(variant, loading)?.border} !important;
+    getButtonProps(variant, loading)?.border};
   background-color: ${({ variant, loading }) =>
     getButtonProps(variant, loading)?.backgroundColor} !important;
   color: ${({ variant, loading }) =>
@@ -33,8 +33,8 @@ export const StyledButton = styled.button<{
     iconPosition === 'left' ? 'row' : 'row-reverse'};
   & svg {
     fill: ${({ variant }) => (variant === 'primary' ? white : '#626262')};
-    width: 8px;
-      height: 8px;
+    width: 20px;
+    height: 20px;
       & path {
       stroke: ${({ variant }) =>
         variant === 'primary' ? white : '#626262'};
