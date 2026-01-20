@@ -10,6 +10,7 @@ import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YA
 import { useMemo } from "react";
 import bookings from "../../mock/bookings.json";
 import { CustomTooltip } from "./CustomTooltip";
+import { Archivo } from "../../styles/abstracts/colors";
 
 export const Allocations = () => {
 
@@ -42,8 +43,8 @@ export const Allocations = () => {
             <LineChart data={allocations}>
               <CartesianGrid stroke="#C9CBCD" strokeDasharray="6 6" vertical={false} />
               <Line type="natural" dataKey="teu" stroke="#292D30" strokeWidth={4} />
-              <XAxis  axisLine={false} dataKey="etdWeek" />
-              <YAxis  axisLine={false} width="auto" label={{ value: 'teu', position: 'insideLeft', angle: -90 }} />
+              <XAxis fontFamily={Archivo} fontSize={15} color="#8D9092"   axisLine={false} dataKey="etdWeek" />
+              <YAxis fontFamily={Archivo} fontSize={15} color="#8D9092"  axisLine={false} width="auto" label={{ value: 'teu', position: 'insideLeft', angle: -90 }} />
               <Tooltip content={<CustomTooltip />} />
             </LineChart>
           </ResponsiveContainer>

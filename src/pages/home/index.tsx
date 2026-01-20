@@ -3,33 +3,145 @@ import {
   MainHeaderContainer,
   MainHeaderDescription,
   MainHeaderTitle,
-  AllocationRoutesContainer,
+  HomeContainer,
+  TableSection,
+  TableSectionContent,
+  DonutSection,
+  DonutTitle,
+  TableSectionContainer,
+  TableSectionHeader,
+  TableSectionHeaderTitle,
 } from "./styles"
 import Layout from "../../components/Layout"
-import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Cell, Label, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { useMemo } from "react";
+import allocationRoutes from "../../mock/allocation_routes.json";
+import { CustomTooltip } from "./CustomTooltip";
+import { CustomLegend } from "./CustomLegend";
+import { Archivo } from "../../styles/abstracts/colors";
+import Table from "../../components/Table";
+import Button from "../../components/Button";
 
 export const Home = () => {
+  const teuAllocations = useMemo(() => {
+    return Array.from({ length: 7 }, (_, index) => {
+      return {
+        vessel: allocationRoutes[index].vessel,
+        utilisation: allocationRoutes[index].utilization,
+        outstandingCommitted: allocationRoutes[index].outstandingCommitted,
+      }
+    })
+  }, [allocationRoutes])
+
+  const voyages = useMemo(() => {
+    return allocationRoutes.map(allocation => {
+      return {
+        voyage: allocation.voyage,
+        name: allocation.vessel,
+        serviceString: allocation.serviceString,
+        etd: allocation.linkedScheduleEtd,
+      }
+    }).splice(0, 5)
+  }, [allocationRoutes])
+
+  const totalPages = Math.max(1, Math.ceil(voyages.length / 5))
+
+  const columns = useMemo(() => [ 
+    {
+      header: 'Name',
+      accessorKey: 'name',
+    },
+    {
+      header: 'Voyage',
+      accessorKey: 'voyage',
+    },
+    {
+      header: 'Service String',
+      accessorKey: 'serviceString',
+    },
+    {
+      header: 'ETD',
+      accessorKey: 'etd',
+    },
+  ], [])
 
   return (
     <Layout>
-      <AllocationRoutesContainer>
+      <HomeContainer>
         <MainHeaderContainer>
           <MainHeader>
             <MainHeaderTitle>Home</MainHeaderTitle>
             <MainHeaderDescription>Hello Admin, how are you doing today?</MainHeaderDescription>
           </MainHeader>
         </MainHeaderContainer>
-          <ResponsiveContainer width="100%" height={600}>
-            <LineChart data={[{ name: 'Page A', uv: 400, pv: 2400, amt: 2400 }]}>
-              <CartesianGrid stroke="#aaa" strokeDasharray="5 5" />
-              <Line type="monotone" dataKey="uv" stroke="purple" strokeWidth={2} />
-              <XAxis dataKey="name" />
-              <YAxis width="auto" label={{ value: 'uv', position: 'insideLeft', angle: -90 }} />
-              <Tooltip />
-            </LineChart>
-          </ResponsiveContainer>
-      </AllocationRoutesContainer>
-    </Layout>
+              <BarChart barGap={16} style={{ width: '100%', maxHeight: '70vh', aspectRatio: 1.618 }} responsive data={teuAllocations}>
+                <CartesianGrid vertical={false} />
+                <XAxis fontFamily={Archivo} fontSize={15} color="#8D9092" dataKey="vessel" />
+                <YAxis fontFamily={Archivo} fontSize={15} color="#8D9092" width="auto" />
+                <Tooltip content={<CustomTooltip />} cursor={false} />
+                <Legend
+                  content={props => (
+                    <CustomLegend
+                      {...props}
+                      labelMap={{
+                        outstandingCommitted: 'Under used',
+                        utilisation: 'Over used',
+                      }}
+                    />
+                  )}
+                />
+                <Bar barSize={61.81} fill="#EE6C4D" radius={[9, 9, 9, 9]} dataKey="outstandingCommitted"/>
+                <Bar barSize={61.81} fill="#000"  radius={[9, 9, 9, 9]} dataKey="utilisation"/>
+              </BarChart>
+            <TableSectionContent>
+            <TableSectionContainer>
+              <TableSectionHeader>
+                <TableSectionHeaderTitle>
+                Top 5 Voyages
+                </TableSectionHeaderTitle>
+                <Button variant="secondary" iconName="upload" iconPosition="left" type="button" label="Export All" handleClick={() => {}} />
+              </TableSectionHeader>
+            <TableSection>
+              <Table
+                data={{
+                  content: voyages,
+                  totalPages,
+                  totalElements: voyages.length,
+                }}
+                columns={columns}
+                pageSize={5}
+                page={0}
+              />
+              </TableSection>
+              
+            </TableSectionContainer>
+           
+              <DonutSection>
+                <DonutTitle>TEU Utilisation (%)</DonutTitle>
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { name: 'Utilisation', value: 70 },
+                        { name: 'Remaining', value: 30 },
+                      ]}
+                      dataKey="value"
+                      nameKey="name"
+                      outerRadius="80%"
+                      innerRadius="55%"
+                      cornerRadius={60}
+                    >
+                      <Cell fill="#EE6C4D" />
+                      <Cell fill="#ECEDEE" />
+                      <Label fontSize={36} fontWeight={500} value={`70%`} fontFamily={Archivo} position="center" fill="#292D30s" />
+                    </Pie>
+                  </PieChart>
+                </ResponsiveContainer>
+              </DonutSection>
+            </TableSectionContent>
+         
+      </HomeContainer>
+    </Layout> 
   )
 }
 

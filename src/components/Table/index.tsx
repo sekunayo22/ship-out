@@ -167,7 +167,7 @@ const Table = <TData extends RowData>({
               </TableFooterRow>
             </TableFooter>
           </TableContainer>
-      {data?.content && data?.content?.length > 0 && (
+      {(data?.content?.length ?? 0) > pageSize && (
         <div
           data-table-pagination
           className={css`
@@ -192,6 +192,10 @@ const Table = <TData extends RowData>({
               padding: 8px 12px !important;
               height: auto !important;
               line-height: 20px !important;
+              & svg  {
+              width: 8px !important;
+              height: 8px !important;
+            }
             `}
             iconName='caretLeft'
             iconPosition='left'
@@ -257,6 +261,10 @@ const Table = <TData extends RowData>({
               padding: 8px 12px !important;
               height: auto !important;
               line-height: 20px !important;
+               & svg  {
+              width: 8px !important;
+              height: 8px !important;
+            }
             `}
             iconName='caretRight'
           >

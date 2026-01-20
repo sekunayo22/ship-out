@@ -1,13 +1,14 @@
 import styled from '@emotion/styled'
-import { ClashDisplay, primary01, secondary01 } from '../../styles/abstracts/colors'
+import { black, ClashDisplay, primary01, secondary01 } from '../../styles/abstracts/colors'
 
-export const AllocationRoutesContainer = styled.div`
+export const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
   flex: 1;
   min-height: 0;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 `
 
 export const MainHeader = styled.div`
@@ -43,5 +44,64 @@ export const TableSection = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-height: 0;
+  border-radius: 8px;
+  border: 1px solid #EAECF0;
+  height: 100%;
+
+  & table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border: none !important;
+  }
 `
+
+export const TableSectionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  gap: 16px;
+`
+
+export const TableSectionContent = styled.div`
+  display: grid; 
+  grid-template-columns: 2fr 1fr;
+  height: auto;
+  padding-top: 48px;
+`
+
+export const DonutSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 100%;
+`
+
+export const DonutTitle = styled.h2`
+  color: ${black};
+  font-family: ${ClashDisplay};
+text-align: center;
+font-size: 16px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+`
+
+export const TableSectionHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  & svg path { 
+    fill: none;
+    stroke: ${black};
+  }
+`
+export const TableSectionHeaderTitle = styled.h2`
+  color: ${black};
+font-family: ${ClashDisplay};
+font-size: 16px;
+font-style: normal;
+font-weight: 500;
+line-height: 20px; 
+`;
