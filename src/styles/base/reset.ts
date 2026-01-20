@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { Archivo, black } from '../abstracts/colors'
+import { Archivo, background, black } from '../abstracts/colors'
 
 export const normalize = css`
   :root {
@@ -19,13 +19,11 @@ export const normalize = css`
 
   html {
     width: 100vw;
-    height: 100vh;
     overflow-x: hidden;
   }
 
   /* Set core body defaults */
   body {
-    min-height: 100vh;
     text-rendering: optimizeSpeed;
     line-height: 1.5;
     margin: 0;
@@ -34,6 +32,8 @@ export const normalize = css`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: ${Archivo};
+    background-color: ${background};
+
   }
 
   main {

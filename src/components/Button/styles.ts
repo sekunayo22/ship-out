@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import type { ButtonVariant, ButtonSize } from '../../types/component'
-import { black, grey, white } from '../../styles/abstracts/colors'
+import { black, grey, secondary02, white } from '../../styles/abstracts/colors'
 
 export const StyledButton = styled.button<{
   variant: ButtonVariant
@@ -14,7 +14,13 @@ export const StyledButton = styled.button<{
   justify-content: center;
   align-items: center;
   gap: 8px;
-  width: 100%;
+  width: fit-content;
+  border-radius: 4px;
+  font-family: Archivo;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%; 
   cursor: ${({ loading }) => (loading ? 'not-allowed' : 'pointer')};
   border: ${({ variant, loading }) =>
     getButtonProps(variant, loading)?.border} !important;
@@ -26,12 +32,14 @@ export const StyledButton = styled.button<{
   flex-direction: ${({ iconPosition }) =>
     iconPosition === 'left' ? 'row' : 'row-reverse'};
   & svg {
-    fill: ${({ variant }) => (variant === 'primary' ? white : black)};
-    & path {
+    fill: ${({ variant }) => (variant === 'primary' ? white : '#626262')};
+    width: 8px;
+      height: 8px;
+      & path {
       stroke: ${({ variant }) =>
-        variant === 'primary' ? white : black};
+        variant === 'primary' ? white : '#626262'};
       fill: ${({ variant }) =>
-        variant === 'primary' ? white : black};
+        variant === 'primary' ? white : '#626262'};
     }
   }
 `
@@ -53,8 +61,8 @@ function getButtonProps(variant: ButtonVariant, loading?: boolean) {
       break
     case 'secondary':
       props['backgroundColor'] = loading ? grey : white
-      props['color'] = black
-      props['border'] = `1px solid ${black}`
+      props['color'] = secondary02
+      props['border'] = `1px solid ${grey}`
       break
     default:
       return props

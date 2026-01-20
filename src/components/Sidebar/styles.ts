@@ -23,6 +23,7 @@ export const StyledSidebar = styled.div`
   max-width: 232px;
   padding: 24px 16px 32px 16px;
   gap: 24px;
+  border-right: 1px solid rgba(221, 221, 221, 0.87);
 `
 
 export const AppIcon = styled.div`
