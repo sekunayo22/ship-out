@@ -14,25 +14,47 @@ import Table from "../../components/Table"
 import vessels from "../../mock/vessels.json"
 import { useTableAutoPageSize } from "../../hooks/useTableAutoPageSize"
 import { Checkbox } from "../../components/Checkbox"
+import { Options } from "../../components/Options"
 import type { Vessel } from "../../types/vessel"
+import { CreateNewVessel } from "./CreateNewVessel"
+import { ViewModal } from "../../components/ViewModal"
+import { EditVesselModal } from "./EditNewVessel"
+import { DeleteModal } from "../../components/DeleteModal"
 
 export const Vessels = () => {
   const [page, setPage] = useState(0)
   const [pageSize, setPageSize] = useState(10)
   const tableSectionRef = useRef<HTMLDivElement>(null)
   const [selectedVessels, setSelectedVessels] = useState<string[]>([])
-
+  const [openCreateNewVesselModal, setOpenCreateNewVesselModal] = useState(false)
+  const [openViewModal, setOpenViewModal] = useState(false)
+  const [openEditNewVesselModal, setOpenEditNewVesselModal] = useState(false)
+  const [selectedVessel, setSelectedVessel] = useState<{ [key: string]: string | number | null | undefined }>({})
+  const [openDeleteModal, setOpenDeleteModal] = useState(false)
   const handleVesselCheck = useCallback((vesselId: string) => {
     setSelectedVessels(prev =>
       prev.includes(vesselId)
         ? prev.filter(id => id !== vesselId)
         : [...prev, vesselId]
     )
-  }, [])
-  
+  }, [setSelectedVessels])
+
+  const handleToggleAllVessels = useCallback(() => {
+    setSelectedVessels(prev =>
+      prev.length === vessels.length
+        ? []
+        : vessels.map(vessel => vessel.id)
+    )
+  }, [setSelectedVessels])
+
   const columns = useMemo<ColumnDef<Vessel>[]>(() => [
     {
-      header: '',
+      header: () => (
+        <Checkbox
+          isChecked={selectedVessels.length > 0 && selectedVessels.length === vessels.length}
+          handleCheck={handleToggleAllVessels}
+        />
+      ),
       accessorKey: 'id',
       size: 50,
       cell: (info: CellContext<Vessel, unknown>) => {
@@ -46,33 +68,48 @@ export const Vessels = () => {
     },
     {
       header: 'Name',
-      accessorKey: 'Name',
+      accessorKey: 'name',
     },
     {
       header: 'Loop',
-      accessorKey: 'Loop',
+      accessorKey: 'loop',
     },
     {
       header: 'Port',
-      accessorKey: 'Port',
+      accessorKey: 'port',
     },
     {
       header: 'ETD',
-      accessorKey: 'ETD',
+      accessorKey: 'etd',
     },
     {
       header: 'ETA',
-      accessorKey: 'ETA',
+      accessorKey: 'eta',
     },
     {
       header: 'WeekNum',
-      accessorKey: 'WeekNum',
+      accessorKey: 'weekNum',
     },
     {
       header: 'Allocation',
-      accessorKey: 'Allocation',
+      accessorKey: 'allocation',
     },
-  ], [handleVesselCheck, selectedVessels])
+    {
+      cell: (info: CellContext<Vessel, unknown>) => (
+        <Options handleDelete={() => {
+          setOpenDeleteModal(true)
+          setSelectedVessel(info.row.original)
+        }} handleEdit={() => {
+          setOpenEditNewVesselModal(true)
+          setSelectedVessel(info.row.original)
+        }} handleView={() => {
+          setOpenViewModal(true)
+          setSelectedVessel(info.row.original)
+        }} />
+      ),
+    header: 'Actions'
+    },
+  ], [handleToggleAllVessels, handleVesselCheck, selectedVessels])
 
   const totalPages = Math.max(1, Math.ceil(vessels.length / pageSize))
 
@@ -92,7 +129,7 @@ export const Vessels = () => {
             <MainHeaderTitle>Vessels</MainHeaderTitle>
             <MainHeaderDescription>View and manage all vessels being used to transport the goods.</MainHeaderDescription>
           </MainHeader>
-          <Button variant="primary" type="button" label="Create New Vessel" />
+          <Button variant="primary" type="button" label="Create New Vessel" handleClick={() => setOpenCreateNewVesselModal(true)} />
         </MainHeaderContainer>
         <TableSection ref={tableSectionRef}>
           <Table
@@ -105,9 +142,14 @@ export const Vessels = () => {
             page={page}
             pageSize={pageSize}
             handlePageChange={nextPage => setPage(Math.max(0, Math.min(nextPage, totalPages - 1)))}
+            selectedItems={selectedVessels}
           />
         </TableSection>
       </VesselsContainer>
+      <CreateNewVessel toggleModal={openCreateNewVesselModal} setToggleModal={setOpenCreateNewVesselModal} />
+      <ViewModal toggleModal={openViewModal} setToggleModal={setOpenViewModal} title="Vessel Details" payload={selectedVessel} />
+      <EditVesselModal toggleModal={openEditNewVesselModal} setToggleModal={setOpenEditNewVesselModal} vessel={selectedVessel} />
+      <DeleteModal toggleModal={openDeleteModal} setToggleModal={setOpenDeleteModal} title="Vessel" id={selectedVessel.id as string} />
     </Layout>
   )
 }

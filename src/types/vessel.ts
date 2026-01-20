@@ -2,7 +2,7 @@ export type Vessel = {
     id: string
     name: string
     loop: string
-    Port: string
+    port: string
     etd: string
     eta: string
     weekNum: number

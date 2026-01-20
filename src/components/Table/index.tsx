@@ -27,7 +27,6 @@ import type { ButtonVariant } from '../../types/component'
 import { type IconNames } from '../../assets/icons/iconTypes'
 import { css } from '@emotion/css'
 import { useMemo } from 'react'
-import { grey } from '../../styles/abstracts/colors'
 
 // Generic table data interface for standardized API responses
 interface TableData<TData extends RowData> {
@@ -55,6 +54,7 @@ interface TableProps<TData extends RowData> {
   }[]
   handlePageChange?: (page: number) => void
   components?: React.ReactNode
+  selectedItems?: string[]
 }
 
 const Table = <TData extends RowData>({
