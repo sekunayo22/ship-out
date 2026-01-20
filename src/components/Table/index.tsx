@@ -65,6 +65,7 @@ const Table = <TData extends RowData>({
   buttonActions,
   handlePageChange,
   components,
+  selectedItems
 }: TableProps<TData>) => {
 
   const totalPages = useMemo(() => data?.totalPages
@@ -139,6 +140,7 @@ const Table = <TData extends RowData>({
                           title={`${typeof cell.getValue() === 'string' ? cell.getValue() : ''}`}
                           key={cell.id}
                           columnHeader={cell.column.columnDef.header}
+                          isSelected={selectedItems?.includes(row.original?.id)}
                         >
                           {flexRender(
                             cell.column.columnDef.cell,

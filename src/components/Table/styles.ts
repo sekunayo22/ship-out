@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { primary01, secondary01 } from '../../styles/abstracts/colors'
+import { black, primary01, secondary01 } from '../../styles/abstracts/colors'
 
 export const TableContainer = styled.div`
   width: 100%;
@@ -48,12 +48,12 @@ export const TableRow = styled.tr`
   border-bottom: 1px solid #EAECF0;
 `
 
-export const TableCell = styled.td<{ columnHeader?: any }>`
+export const TableCell = styled.td<{ columnHeader?: any, isSelected?: boolean }>`
   padding: 8px 16px;
   white-space: nowrap;
   text-overflow: ellipsis;
   vertical-align: middle;
-  color: ${secondary01};
+  color: ${({ isSelected }) => isSelected ? black : secondary01};
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
