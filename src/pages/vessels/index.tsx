@@ -159,12 +159,8 @@ export const Vessels = () => {
     }
   }, [page, totalPages])
 
-  if(isLoading || !vessels?.length) {
-    return <Loader />
-  }
-
   return (
-    <Layout>
+    <Layout isLoading={isLoading || !vessels?.length}>
       <VesselsContainer>
         <MainHeaderContainer>
           <MainHeader>

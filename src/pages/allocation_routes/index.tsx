@@ -140,12 +140,8 @@ export const AllocationRoutes = () => {
     }
   }, [page, totalPages])
 
-  if(isLoading || !allocationRoutes?.length) {
-    return <Loader />
-  }
-
   return (
-    <Layout>
+    <Layout isLoading={isLoading || !allocationRoutes?.length}>
       <AllocationRoutesContainer>
         <MainHeaderContainer>
           <MainHeader>

@@ -61,12 +61,8 @@ export const Home = () => {
     },
   ], [])
 
-  if(voyagesLoading || allocationRoutesLoading || !voyages?.length || !allocationRoutes?.length) {
-    return <Loader/>
-  }
-
   return (
-    <Layout>
+    <Layout isLoading={voyagesLoading || allocationRoutesLoading || !voyages?.length || !allocationRoutes?.length}>
       <HomeContainer>
         <MainHeaderContainer>
           <MainHeader>

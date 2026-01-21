@@ -5,13 +5,16 @@ import {
   MainContentContainer,
   LayoutContainer,
 } from './styles'
+import { ComponentLoader } from '../ComponentLoader'
 
 interface LayoutProps {
   children: React.ReactNode
+  isLoading?: boolean
 }
 
 const Layout: React.FC<LayoutProps> = ({
   children,
+  isLoading = false,
 }) => {
 
   return (
@@ -19,7 +22,7 @@ const Layout: React.FC<LayoutProps> = ({
       <Sidebar />
       <MainContent>
         <MainContentContainer>
-          {children}
+          {isLoading ? <ComponentLoader /> : children}
         </MainContentContainer>
       </MainContent>
     </LayoutContainer>

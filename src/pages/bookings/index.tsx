@@ -142,12 +142,8 @@ export const Bookings = () => {
     }
   }, [page, totalPages])
 
-  if(isLoading || !bookings?.length) {
-    return <Loader />
-  }
-
   return (
-    <Layout>
+    <Layout isLoading={isLoading || !bookings?.length}>
       <BookingsContainer>
         <MainHeaderContainer>
           <MainHeader>

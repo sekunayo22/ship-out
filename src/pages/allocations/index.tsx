@@ -10,17 +10,12 @@ import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YA
 import { CustomTooltip } from "./CustomTooltip";
 import { Archivo } from "../../styles/abstracts/colors";
 import { useGetAllocationsQuery } from "../../services/apis/allocation";
-import Loader from "../../components/Loader";
 
 export const Allocations = () => {
   const { data: allocations, isLoading } = useGetAllocationsQuery()
 
-  if(isLoading || !allocations?.length) {
-    return <Loader />
-  }
-
   return (
-    <Layout>
+    <Layout isLoading={isLoading || !allocations?.length}>
       <AllocationRoutesContainer>
         <MainHeaderContainer>
           <MainHeader>
