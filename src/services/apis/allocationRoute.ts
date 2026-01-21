@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const allocationRouteApi = createApi({
     reducerPath: 'allocationRouteApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: "/api",
+        baseUrl: import.meta.env.VITE_API_BASE_URL || '/api',
     }),
     refetchOnMountOrArgChange: true,
     keepUnusedDataFor: 60,

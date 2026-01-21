@@ -4,7 +4,7 @@ import type { Voyage } from "../../types/voyage";
 export const voyageApi = createApi({
     reducerPath: 'voyageApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: "/api",
+        baseUrl: import.meta.env.VITE_API_BASE_URL || '/api',
     }),
     refetchOnMountOrArgChange: true,
     keepUnusedDataFor: 60,

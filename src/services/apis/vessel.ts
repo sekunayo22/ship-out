@@ -21,7 +21,7 @@ export interface PresignedUrlResponse {
 export const vesselApi = createApi({
   reducerPath: 'vesselApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api",
+    baseUrl: import.meta.env.VITE_API_BASE_URL || '/api',
   }),
   refetchOnMountOrArgChange: true,
   keepUnusedDataFor: 60,
