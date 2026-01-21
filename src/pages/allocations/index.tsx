@@ -7,28 +7,17 @@ import {
 } from "./styles"
 import Layout from "../../components/Layout"
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { useMemo } from "react";
-import bookings from "../../mock/bookings.json";
 import { CustomTooltip } from "./CustomTooltip";
 import { Archivo } from "../../styles/abstracts/colors";
+import { useGetAllocationsQuery } from "../../services/apis/allocation";
+import Loader from "../../components/Loader";
 
 export const Allocations = () => {
+  const { data: allocations, isLoading } = useGetAllocationsQuery()
 
-  const allocations = useMemo(() => {
-    const capacity = 5
-    return bookings.map(booking => {
-      const teu = Number(booking.teu ?? 0)
-      const utilisation = Math.min(100, Math.round((teu / capacity) * 100))
-      return {
-        teu,
-        etdWeek: booking.etdWeek,
-        voyageFlight: booking.voyageFlight,
-        vessel: booking.vessel,
-        utilisation,
-        capacityStatus: utilisation >= 80 ? 'Over used' : 'Available',
-      }
-    })
-  }, [bookings])
+  if(isLoading || !allocations?.length) {
+    return <Loader />
+  }
 
   return (
     <Layout>

@@ -11,7 +11,6 @@ import Button from "../../components/Button"
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react"
 import type { CellContext, ColumnDef } from "@tanstack/react-table"
 import Table from "../../components/Table"
-import vessels from "../../mock/vessels.json"
 import { useTableAutoPageSize } from "../../hooks/useTableAutoPageSize"
 import { Checkbox } from "../../components/Checkbox"
 import { Options } from "../../components/Options"
@@ -23,8 +22,12 @@ import { DeleteModal } from "../../components/DeleteModal"
 import type { IconNames } from "../../assets/icons/iconTypes"
 import type { ButtonVariant } from "../../types/component"
 import { css } from "@emotion/css"
+import { useDeleteVesselMutation, useGetVesselsQuery } from "../../services/apis/vessel"
+import Loader from "../../components/Loader"
 
 export const Vessels = () => {
+  const { data: vessels, isLoading } = useGetVesselsQuery()
+  const [deleteVessel] = useDeleteVesselMutation()
   const [page, setPage] = useState(0)
   const [pageSize, setPageSize] = useState(10)
   const tableSectionRef = useRef<HTMLDivElement>(null)
@@ -34,6 +37,16 @@ export const Vessels = () => {
   const [openEditNewVesselModal, setOpenEditNewVesselModal] = useState(false)
   const [selectedVessel, setSelectedVessel] = useState<{ [key: string]: string | number | null | undefined }>({})
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
+  const handleDeleteVessel = useCallback(() => {
+    deleteVessel(String(selectedVessel.id ?? ""))
+      .unwrap()
+      .then(() => {
+        setOpenDeleteModal(false)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }, [deleteVessel, selectedVessel.id])
   const handleVesselCheck = useCallback((vesselId: string) => {
     setSelectedVessels(prev =>
       prev.includes(vesselId)
@@ -44,17 +57,17 @@ export const Vessels = () => {
 
   const handleToggleAllVessels = useCallback(() => {
     setSelectedVessels(prev =>
-      prev.length === vessels.length
+      prev.length === (vessels?.length ?? 0)
         ? []
-        : vessels.map(vessel => vessel.id)
+        : (vessels?.map(vessel => vessel.id) ?? [])
     )
-  }, [setSelectedVessels])
+  }, [vessels])
 
   const columns = useMemo<ColumnDef<Vessel>[]>(() => [
     {
       header: () => (
         <Checkbox
-          isChecked={selectedVessels.length > 0 && selectedVessels.length === vessels.length}
+          isChecked={selectedVessels.length > 0 && selectedVessels.length === (vessels?.length ?? 0)}
           handleCheck={handleToggleAllVessels}
         />
       ),
@@ -112,7 +125,7 @@ export const Vessels = () => {
       ),
     header: 'Actions'
     },
-  ], [handleToggleAllVessels, handleVesselCheck, selectedVessels])
+  ], [handleToggleAllVessels, handleVesselCheck, selectedVessels, vessels?.length])
 
   const buttonActions = useMemo(() => [
     {
@@ -134,9 +147,9 @@ export const Vessels = () => {
       icon: 'upload' as IconNames,
       variant: 'secondary' as ButtonVariant,
     },
-  ], [setOpenDeleteModal])
+  ], [])
 
-  const totalPages = Math.max(1, Math.ceil(vessels.length / pageSize))
+  const totalPages = Math.max(1, Math.ceil((vessels?.length ?? 0) / pageSize))
 
   useTableAutoPageSize(tableSectionRef, setPageSize)
 
@@ -145,6 +158,10 @@ export const Vessels = () => {
       setPage(0)
     }
   }, [page, totalPages])
+
+  if(isLoading || !vessels?.length) {
+    return <Loader />
+  }
 
   return (
     <Layout>
@@ -161,7 +178,7 @@ export const Vessels = () => {
             data={{
               content: vessels,
               totalPages,
-              totalElements: vessels.length,
+              totalElements: vessels?.length ?? 0,
             }}
             columns={columns}
             page={page}
@@ -175,7 +192,12 @@ export const Vessels = () => {
       <CreateNewVessel toggleModal={openCreateNewVesselModal} setToggleModal={setOpenCreateNewVesselModal} />
       <ViewModal toggleModal={openViewModal} setToggleModal={setOpenViewModal} title="Vessel Details" payload={selectedVessel} />
       <EditVesselModal toggleModal={openEditNewVesselModal} setToggleModal={setOpenEditNewVesselModal} vessel={selectedVessel} />
-      <DeleteModal toggleModal={openDeleteModal} setToggleModal={setOpenDeleteModal} title="Vessel" id={selectedVessel.id as string} />
+      <DeleteModal
+        toggleModal={openDeleteModal}
+        setToggleModal={setOpenDeleteModal}
+        id={String(selectedVessel.id ?? "")}
+        handleDelete={handleDeleteVessel}
+      />
     </Layout>
   )
 }

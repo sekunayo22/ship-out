@@ -27,6 +27,8 @@ export const Sidebar = () => {
             <SidebarNavItem key={index + 1}>
               <SidebarNavItemLink
                 to={route.href}
+                end={route.href === '/'}
+                className={({ isActive }) => (isActive ? 'active' : undefined)}
               >
                 {route.label}
               </SidebarNavItemLink>

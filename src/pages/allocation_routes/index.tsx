@@ -12,7 +12,6 @@ import type { CellContext, ColumnDef } from "@tanstack/react-table"
 import Table from "../../components/Table"
 import { useTableAutoPageSize } from "../../hooks/useTableAutoPageSize"
 import { Checkbox } from "../../components/Checkbox"
-import allocationRoutes from "../../mock/allocation_routes.json"
 import type { AllocationRoute } from "../../types/allocationRoute"
 import { DeleteModal } from "../../components/DeleteModal"
 import { ViewModal } from "../../components/ViewModal"
@@ -20,6 +19,8 @@ import { Options } from "../../components/Options"
 import type { IconNames } from "../../assets/icons/iconTypes"
 import type { ButtonVariant } from "../../types/component"
 import { css } from "@emotion/css"
+import { useDeleteAllocationRouteMutation, useGetAllocationRoutesQuery } from "../../services/apis/allocationRoute"
+import Loader from "../../components/Loader"
 
 export const AllocationRoutes = () => {
   const [page, setPage] = useState(0)
@@ -29,7 +30,15 @@ export const AllocationRoutes = () => {
   const [selectedAllocationRoute, setSelectedAllocationRoute] = useState<{ [key: string]: string | number | null | undefined }>({})
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
   const [openViewModal, setOpenViewModal] = useState(false)
-
+  const { data: allocationRoutes, isLoading } = useGetAllocationRoutesQuery()
+  const [deleteAllocationRoute] = useDeleteAllocationRouteMutation()  
+  const handleDeleteAllocationRoute = useCallback(() => {
+    deleteAllocationRoute(selectedAllocationRoute?.id as string).unwrap().then(() => {
+      setOpenDeleteModal(false)
+    }).catch((error) => {
+      console.error(error)
+    })
+  }, [deleteAllocationRoute, selectedAllocationRoute])
     const handleAllocationRouteCheck = useCallback((allocationRouteId: string) => {
     setSelectedAllocationRoutes(prev =>
       prev.includes(allocationRouteId)
@@ -40,17 +49,17 @@ export const AllocationRoutes = () => {
 
   const handleToggleAllAllocationRoutes = useCallback(() => {
     setSelectedAllocationRoutes(prev =>
-      prev.length === allocationRoutes.length
+      prev.length === (allocationRoutes?.length ?? 0)
         ? []
-        : allocationRoutes.map(allocationRoute => allocationRoute.id)
+        : (allocationRoutes?.map(allocationRoute => allocationRoute.id) ?? [])
     )
-  }, [setSelectedAllocationRoutes])
+  }, [allocationRoutes])
   
   const columns = useMemo<ColumnDef<AllocationRoute>[]>(() => [
     {
       header: () => (
         <Checkbox
-          isChecked={selectedAllocationRoutes.length > 0 && selectedAllocationRoutes.length === allocationRoutes.length}
+          isChecked={selectedAllocationRoutes.length > 0 && selectedAllocationRoutes.length === (allocationRoutes?.length ?? 0)}
           handleCheck={handleToggleAllAllocationRoutes}
         />
       ),
@@ -97,7 +106,7 @@ export const AllocationRoutes = () => {
       ),
     header: 'Actions'
     },
-  ], [handleAllocationRouteCheck, selectedAllocationRoutes])
+  ], [allocationRoutes?.length, handleAllocationRouteCheck, handleToggleAllAllocationRoutes, selectedAllocationRoutes])
 
   const buttonActions = useMemo(() => [
     {
@@ -119,9 +128,9 @@ export const AllocationRoutes = () => {
       icon: 'upload' as IconNames,
       variant: 'secondary' as ButtonVariant,
     },
-  ], [setOpenDeleteModal])
+  ], [])
 
-  const totalPages = Math.max(1, Math.ceil(allocationRoutes.length / pageSize))
+  const totalPages = Math.max(1, Math.ceil((allocationRoutes?.length ?? 0) / pageSize))
 
   useTableAutoPageSize(allocationRoutesTableRef, setPageSize)
 
@@ -130,6 +139,10 @@ export const AllocationRoutes = () => {
       setPage(0)
     }
   }, [page, totalPages])
+
+  if(isLoading || !allocationRoutes?.length) {
+    return <Loader />
+  }
 
   return (
     <Layout>
@@ -145,7 +158,7 @@ export const AllocationRoutes = () => {
             data={{
               content: allocationRoutes,
               totalPages,
-              totalElements: allocationRoutes.length,
+              totalElements: allocationRoutes?.length ?? 0,
             }}
             columns={columns}
             page={page}
@@ -157,7 +170,7 @@ export const AllocationRoutes = () => {
         </TableSection>
       </AllocationRoutesContainer>
       <ViewModal toggleModal={openViewModal} setToggleModal={setOpenViewModal} title="Allocation Route Details" payload={selectedAllocationRoute} />
-      <DeleteModal toggleModal={openDeleteModal} setToggleModal={setOpenDeleteModal} title="Allocation Route" id={selectedAllocationRoute.id as string} />
+      <DeleteModal toggleModal={openDeleteModal} setToggleModal={setOpenDeleteModal} id={selectedAllocationRoute?.id as string} handleDelete={handleDeleteAllocationRoute} />
     </Layout>
   )
 }

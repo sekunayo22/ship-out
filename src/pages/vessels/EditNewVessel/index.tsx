@@ -4,7 +4,11 @@ import Input from "../../../components/Input"
 import Icon from "../../../components/Icon"
 import { FormHeader, FormHeaderTitle, CloseButton, FormContainer, ButtonContainer, FormGroup, EditVesselContainer } from "./styles"
 import Modal from "../../../components/Modal"
-import { useEffect } from "react"
+import { useCallback, useEffect } from "react"
+import { useUpdateVesselMutation } from "../../../services/apis/vessel"
+import type { CreateVesselPayload } from "../../../services/apis/vessel"
+
+type VesselFormValues = CreateVesselPayload
 
 interface EditVesselModalProps {
   toggleModal: boolean;
@@ -13,7 +17,19 @@ interface EditVesselModalProps {
 }
 
 export const EditVesselModal = ({ toggleModal, setToggleModal, vessel }: EditVesselModalProps) => {
-  const { control, handleSubmit, reset } = useForm()
+  const { control, handleSubmit, reset } = useForm<VesselFormValues>()
+  const [updateVessel] = useUpdateVesselMutation()
+
+  const handleUpdateVessel = useCallback((data: VesselFormValues) => {
+    updateVessel({
+      id: String(vessel.id ?? ""),
+      ...data,
+    }).unwrap().then(() => {
+      setToggleModal(false)
+    }).catch((error) => {
+      console.error(error)
+    })
+  }, [setToggleModal, updateVessel, vessel.id]) 
 
   useEffect(() => {
     reset(vessel)
@@ -28,7 +44,7 @@ export const EditVesselModal = ({ toggleModal, setToggleModal, vessel }: EditVes
           <Icon icon='close' />
         </CloseButton>
       </FormHeader>
-      <FormContainer>
+      <FormContainer onSubmit={handleSubmit(handleUpdateVessel)}>
         <Input
           type='text'
           control={control}

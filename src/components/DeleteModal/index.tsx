@@ -6,11 +6,11 @@ import { CloseButton, DeleteModalButtons, DeleteModalContainer, DeleteModalConte
 interface DeleteModalProps {
     toggleModal: boolean
     setToggleModal: React.Dispatch<React.SetStateAction<boolean>>
-    title: string
     id: string;
+    handleDelete: () => void;
 }
 
-export const DeleteModal = ({ toggleModal, setToggleModal, title, id }: DeleteModalProps) => {
+export const DeleteModal = ({ toggleModal, setToggleModal, id, handleDelete }: DeleteModalProps) => {
     return (
         <Modal toggleModal={toggleModal} setToggleModal={setToggleModal}>
             <DeleteModalContainer>
@@ -28,7 +28,7 @@ export const DeleteModal = ({ toggleModal, setToggleModal, title, id }: DeleteMo
                 </DeleteModalContent>
                 <DeleteModalButtons>
                     <Button variant='secondary' label='No Thanks' handleClick={() => setToggleModal(false)} type={"button"} />
-                    <Button variant='primary' label='Delete' handleClick={() => setToggleModal(false)} type={"button"} />
+                    <Button variant='primary' label='Delete' handleClick={handleDelete} type={"button"} />
                 </DeleteModalButtons>
             </DeleteModalContainer>
         </Modal>

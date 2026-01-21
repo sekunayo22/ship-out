@@ -1,0 +1,34 @@
+import type { Allocation } from "../../types/allocation";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+export const allocationApi = createApi({
+    reducerPath: 'allocationApi',
+    baseQuery: fetchBaseQuery({
+        baseUrl: "/api",
+    }),
+    refetchOnMountOrArgChange: true,
+    keepUnusedDataFor: 60,
+    endpoints: builder => ({
+        getAllocations: builder.query<Allocation[], void>({
+            query: () => ({
+                url: '/allocations',
+                method: 'GET',
+            }),
+        }),
+        getAllocationById: builder.query<Allocation, string>({
+            query: id => ({
+                url: `/allocations/${id}`,
+                method: 'GET',
+            }),
+        }),
+        deleteAllocation: builder.mutation<void, string>({
+            query: id => ({
+                url: `/allocations/${id}`,
+                method: 'DELETE',
+            }), 
+
+        }),
+    }),
+})
+
+export const { useGetAllocationsQuery, useGetAllocationByIdQuery, useDeleteAllocationMutation } = allocationApi 

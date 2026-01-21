@@ -48,7 +48,7 @@ export const TableRow = styled.tr`
   border-bottom: 1px solid #EAECF0;
 `
 
-export const TableCell = styled.td<{ columnHeader?: any, isSelected?: boolean }>`
+export const TableCell = styled.td<{ columnHeader?: string; isSelected?: boolean }>`
   padding: 8px 16px;
   white-space: nowrap;
   text-overflow: ellipsis;

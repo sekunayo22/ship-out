@@ -15,6 +15,8 @@ export const SidebarHeader = styled.div`
 `
 
 export const StyledSidebar = styled.div`
+  position: relative;
+  z-index: 1;
   height: 100vh;
   overflow-y: hidden;
   display: flex;

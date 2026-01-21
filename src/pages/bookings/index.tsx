@@ -13,13 +13,14 @@ import Table from "../../components/Table"
 import { useTableAutoPageSize } from "../../hooks/useTableAutoPageSize"
 import { Checkbox } from "../../components/Checkbox"
 import type { Booking } from "../../types/booking"
-import bookings from "../../mock/bookings.json"
 import { Options } from "../../components/Options"
 import { ViewModal } from "../../components/ViewModal"
 import { DeleteModal } from "../../components/DeleteModal"
 import type { IconNames } from "../../assets/icons/iconTypes"
 import type { ButtonVariant } from "../../types/component"
 import { css } from "@emotion/css"
+import { useDeleteBookingMutation, useGetBookingsQuery } from "../../services/apis/booking"
+import Loader from "../../components/Loader"
 
 export const Bookings = () => {
   const [page, setPage] = useState(0)
@@ -29,6 +30,16 @@ export const Bookings = () => {
   const [selectedBooking, setSelectedBooking] = useState<{ [key: string]: string | number | null | undefined }>({})
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
   const [openViewModal, setOpenViewModal] = useState(false)
+  const { data: bookings, isLoading } = useGetBookingsQuery()
+  const [deleteBooking] = useDeleteBookingMutation()
+
+  const handleDeleteBooking = useCallback(() => {
+    deleteBooking(selectedBooking?.id as string).unwrap().then(() => {
+      setOpenDeleteModal(false)
+    }).catch((error) => {
+      console.error(error)
+    })
+  }, [deleteBooking, selectedBooking])
 
     const handleBookingCheck = useCallback((bookingId: string) => {
     setSelectedBookings(prev =>
@@ -36,21 +47,21 @@ export const Bookings = () => {
         ? prev.filter(id => id !== bookingId)
         : [...prev, bookingId]
     )
-  }, [])
+  }, [setSelectedBookings])
 
   const handleToggleAllBookings = useCallback(() => {
     setSelectedBookings(prev =>
-      prev.length === bookings.length
+      prev.length === (bookings?.length ?? 0)
         ? []
-        : bookings.map(booking => booking.id)
+        : (bookings?.map(booking => booking.id) ?? [])
     )
-  }, [setSelectedBookings])
+  }, [setSelectedBookings, bookings])
   
   const columns = useMemo<ColumnDef<Booking>[]>(() => [
     {
       header: () => (
         <Checkbox
-          isChecked={selectedBookings.length > 0 && selectedBookings.length === bookings.length}
+          isChecked={selectedBookings.length > 0 && selectedBookings.length === (bookings?.length ?? 0)}
           handleCheck={handleToggleAllBookings}
         />
       ),
@@ -97,7 +108,7 @@ export const Bookings = () => {
       ),
     header: 'Actions'
     },
-  ], [handleBookingCheck, selectedBookings])
+  ], [bookings?.length, handleBookingCheck, handleToggleAllBookings, selectedBookings])
 
   const buttonActions = useMemo(() => [
     {
@@ -119,9 +130,9 @@ export const Bookings = () => {
       icon: 'upload' as IconNames,
       variant: 'secondary' as ButtonVariant,
     },
-  ], [setOpenDeleteModal])
+  ], [])
 
-  const totalPages = Math.max(1, Math.ceil(bookings.length / pageSize))
+  const totalPages = Math.max(1, Math.ceil((bookings?.length ?? 0) / pageSize))
 
   useTableAutoPageSize(bookingsTableRef, setPageSize)
 
@@ -130,6 +141,10 @@ export const Bookings = () => {
       setPage(0)
     }
   }, [page, totalPages])
+
+  if(isLoading || !bookings?.length) {
+    return <Loader />
+  }
 
   return (
     <Layout>
@@ -145,7 +160,7 @@ export const Bookings = () => {
             data={{
               content: bookings,
               totalPages,
-              totalElements: bookings.length,
+              totalElements: bookings?.length ?? 0,
             }}
             columns={columns}
             buttonActions={buttonActions}
@@ -157,7 +172,7 @@ export const Bookings = () => {
         </TableSection>
       </BookingsContainer>
       <ViewModal toggleModal={openViewModal} setToggleModal={setOpenViewModal} title="Booking Details" payload={selectedBooking} />
-      <DeleteModal toggleModal={openDeleteModal} setToggleModal={setOpenDeleteModal} title="Booking" id={selectedBooking.id as string} />
+      <DeleteModal toggleModal={openDeleteModal} setToggleModal={setOpenDeleteModal} id={selectedBooking?.id as string} handleDelete={handleDeleteBooking} />
     </Layout>
   )
 }

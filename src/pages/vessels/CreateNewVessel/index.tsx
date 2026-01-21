@@ -4,6 +4,11 @@ import Input from "../../../components/Input"
 import Icon from "../../../components/Icon"
 import { CreateNewVesselContainer, FormHeader, FormHeaderTitle, CloseButton, FormContainer, ButtonContainer, FormGroup } from "./styles"
 import Modal from "../../../components/Modal"
+import { useCreateVesselMutation } from "../../../services/apis/vessel"
+import type { CreateVesselPayload } from "../../../services/apis/vessel"
+import { useCallback } from "react"
+
+type VesselFormValues = CreateVesselPayload
 
 interface CreateNewVesselProps {
   toggleModal: boolean;
@@ -11,7 +16,17 @@ interface CreateNewVesselProps {
 }
 
 export const CreateNewVessel = ({ toggleModal, setToggleModal }: CreateNewVesselProps) => {
-  const { control, handleSubmit } = useForm()
+  const { control, handleSubmit } = useForm<VesselFormValues>()
+  const [createVessel] = useCreateVesselMutation()
+
+  const handleCreateVessel = useCallback((data: VesselFormValues) => {
+    createVessel(data).unwrap().then(() => {
+      setToggleModal(false)
+    }).catch((error) => {
+      console.error(error)
+    })
+  }, [createVessel, setToggleModal]) 
+
   return (
     <Modal toggleModal={toggleModal} setToggleModal={setToggleModal}>
     <CreateNewVesselContainer>
@@ -21,7 +36,7 @@ export const CreateNewVessel = ({ toggleModal, setToggleModal }: CreateNewVessel
           <Icon icon='close' />
         </CloseButton>
       </FormHeader>
-      <FormContainer>
+      <FormContainer onSubmit={handleSubmit(handleCreateVessel)}>
         <Input
           type='text'
           control={control}

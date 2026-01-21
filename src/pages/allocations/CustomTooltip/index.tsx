@@ -1,19 +1,32 @@
-import { CustomTooltipContainer, CustomTooltipLabel } from "./styles";
+import type { TooltipProps } from "recharts"
+import { CustomTooltipContainer, CustomTooltipLabel } from "./styles"
 
-export const CustomTooltip = ({ payload, label, active }: any) => {
+type AllocationTooltipPayload = {
+  teu?: number
+  voyageFlight?: number | string
+  capacityStatus?: string
+  utilisation?: number
+}
+
+export const CustomTooltip = ({
+  payload,
+  label,
+  active,
+}: TooltipProps<number, string>) => {
   if (!active || !payload || !payload.length) return null
+  const payloadData = payload[0]?.payload as AllocationTooltipPayload | undefined
 
   return (
     <CustomTooltipContainer>
       <CustomTooltipLabel>{`ETD Week: ${label}`}</CustomTooltipLabel>
-      <CustomTooltipLabel>{`TEU: ${payload[0]?.payload?.teu}`}</CustomTooltipLabel>
-      {payload[0]?.payload?.voyageFlight     ? (
-        <CustomTooltipLabel>{`Voyages: ${payload[0]?.payload?.voyageFlight}`}</CustomTooltipLabel>
+      <CustomTooltipLabel>{`TEU: ${payloadData?.teu}`}</CustomTooltipLabel>
+      {payloadData?.voyageFlight ? (
+        <CustomTooltipLabel>{`Voyages: ${payloadData?.voyageFlight}`}</CustomTooltipLabel>
       ) : null}
-      {payload[0]?.payload?.capacityStatus ? (
-        <CustomTooltipLabel>{`Capacity: ${payload[0]?.payload?.capacityStatus}`}</CustomTooltipLabel>
+      {payloadData?.capacityStatus ? (
+        <CustomTooltipLabel>{`Capacity: ${payloadData?.capacityStatus}`}</CustomTooltipLabel>
       ) : null}
-      <CustomTooltipLabel>{`Utilisation: ${payload[0]?.payload?.utilisation}%`}</CustomTooltipLabel>
+      <CustomTooltipLabel>{`Utilisation: ${payloadData?.utilisation}%`}</CustomTooltipLabel>
     </CustomTooltipContainer>
   )
 }

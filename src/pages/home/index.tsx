@@ -16,37 +16,31 @@ import {
 import Layout from "../../components/Layout"
 import { Bar, BarChart, CartesianGrid, Cell, Label, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useMemo } from "react";
-import allocationRoutes from "../../mock/allocation_routes.json";
 import { CustomTooltip } from "./CustomTooltip";
 import { CustomLegend } from "./CustomLegend";
 import { Archivo } from "../../styles/abstracts/colors";
 import Table from "../../components/Table";
 import Button from "../../components/Button";
 import { Card } from "../../components/Card";
+import { useGetVoyagesQuery } from "../../services/apis/voyage";
+import { useGetAllocationRoutesQuery } from "../../services/apis/allocationRoute";
+import Loader from "../../components/Loader";
 
 export const Home = () => {
+  const { data: voyages, isLoading: voyagesLoading } = useGetVoyagesQuery()
+  const {data: allocationRoutes, isLoading: allocationRoutesLoading} = useGetAllocationRoutesQuery()
+  
   const teuAllocations = useMemo(() => {
     return Array.from({ length: 7 }, (_, index) => {
       return {
-        vessel: allocationRoutes[index].vessel,
-        utilisation: allocationRoutes[index].utilization,
-        outstandingCommitted: allocationRoutes[index].outstandingCommitted,
+        vessel: allocationRoutes?.[index]?.vessel,
+        utilisation: allocationRoutes?.[index]?.utilization,
+        outstandingCommitted: allocationRoutes?.[index]?.outstandingCommitted,
       }
     })
   }, [allocationRoutes])
 
-  const voyages = useMemo(() => {
-    return allocationRoutes.map(allocation => {
-      return {
-        voyage: allocation.voyage,
-        name: allocation.vessel,
-        serviceString: allocation.serviceString,
-        etd: allocation.linkedScheduleEtd,
-      }
-    }).splice(0, 5)
-  }, [allocationRoutes])
-
-  const totalPages = Math.max(1, Math.ceil(voyages.length / 5))
+  const totalPages = Math.max(1, Math.ceil((voyages?.length ?? 0) / 5))
 
   const columns = useMemo(() => [ 
     {
@@ -66,6 +60,10 @@ export const Home = () => {
       accessorKey: 'etd',
     },
   ], [])
+
+  if(voyagesLoading || allocationRoutesLoading || !voyages?.length || !allocationRoutes?.length) {
+    return <Loader/>
+  }
 
   return (
     <Layout>
@@ -113,7 +111,7 @@ export const Home = () => {
                 data={{
                   content: voyages,
                   totalPages,
-                  totalElements: voyages.length,
+                  totalElements: voyages?.length,
                 }}
                 columns={columns}
                 pageSize={5}

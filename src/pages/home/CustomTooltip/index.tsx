@@ -1,13 +1,24 @@
-import { CustomTooltipContainer, CustomTooltipLabel } from "./styles";
+import type { TooltipProps } from "recharts"
+import { CustomTooltipContainer, CustomTooltipLabel } from "./styles"
 
-export const CustomTooltip = ({ payload, label, active }: any) => {
+type HomeTooltipPayload = {
+  utilisation?: number
+  outstandingCommitted?: number
+}
+
+export const CustomTooltip = ({
+  payload,
+  label,
+  active,
+}: TooltipProps<number, string>) => {
   if (!active || !payload || !payload.length) return null
+  const payloadData = payload[0]?.payload as HomeTooltipPayload | undefined
 
   return (
     <CustomTooltipContainer>
       <CustomTooltipLabel>{`Vessel: ${label}`}</CustomTooltipLabel>
-      <CustomTooltipLabel>{`Utilisation: ${payload[0]?.payload?.utilisation}`}</CustomTooltipLabel>
-      <CustomTooltipLabel>{`Outstanding Committed: ${payload[0]?.payload?.outstandingCommitted}`}</CustomTooltipLabel>
+      <CustomTooltipLabel>{`Utilisation: ${payloadData?.utilisation}`}</CustomTooltipLabel>
+      <CustomTooltipLabel>{`Outstanding Committed: ${payloadData?.outstandingCommitted}`}</CustomTooltipLabel>
     </CustomTooltipContainer>
   )
 }

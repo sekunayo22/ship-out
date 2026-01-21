@@ -140,8 +140,14 @@ const Table = <TData extends RowData>({
                         <TableCell
                           title={`${typeof cell.getValue() === 'string' ? cell.getValue() : ''}`}
                           key={cell.id}
-                          columnHeader={cell.column.columnDef.header}
-                          isSelected={selectedItems?.includes(row.original?.id)}
+                          columnHeader={
+                            typeof cell.column.columnDef.header === 'string'
+                              ? cell.column.columnDef.header
+                              : undefined
+                          }
+                          isSelected={selectedItems?.includes(
+                            String((row.original as { id?: string | number })?.id ?? '')
+                          )}
                         >
                           {flexRender(
                             cell.column.columnDef.cell,
@@ -220,7 +226,7 @@ const Table = <TData extends RowData>({
                 0,
                 currentPage - Math.floor(maxButtons / 2)
               )
-              let endPage = Math.min(totalPages - 1, startPage + maxButtons - 1)
+              const endPage = Math.min(totalPages - 1, startPage + maxButtons - 1)
 
               // Adjust start page if we're near the end
               if (endPage - startPage < maxButtons - 1) {
