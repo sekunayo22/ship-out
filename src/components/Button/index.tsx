@@ -57,7 +57,6 @@ const Button = ({
         </ButtonIcon>
       )}
       {label || children}
-      {loading && <Icon icon={'loading'} />}
     </StyledButton>
   )
 }

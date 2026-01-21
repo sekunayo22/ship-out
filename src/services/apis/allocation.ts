@@ -8,25 +8,28 @@ export const allocationApi = createApi({
     }),
     refetchOnMountOrArgChange: true,
     keepUnusedDataFor: 60,
+    tagTypes: ['Allocations', 'Allocation'],
     endpoints: builder => ({
         getAllocations: builder.query<Allocation[], void>({
             query: () => ({
                 url: '/allocations',
                 method: 'GET',
             }),
+            providesTags: ['Allocations'],
         }),
         getAllocationById: builder.query<Allocation, string>({
             query: id => ({
                 url: `/allocations/${id}`,
                 method: 'GET',
             }),
+            providesTags: ['Allocation'],
         }),
         deleteAllocation: builder.mutation<void, string>({
             query: id => ({
                 url: `/allocations/${id}`,
                 method: 'DELETE',
             }), 
-
+            invalidatesTags: ['Allocations', 'Allocation'],
         }),
     }),
 })

@@ -25,6 +25,7 @@ export const vesselApi = createApi({
   }),
   refetchOnMountOrArgChange: true,
   keepUnusedDataFor: 60,
+  tagTypes: ['Vessels', 'Vessel'],
   endpoints: builder => ({
     getVessels: builder.query<
       Vessel[],
@@ -34,6 +35,7 @@ export const vesselApi = createApi({
         url: `/vessels`,
         method: 'GET',
       }),
+      providesTags: ['Vessels'],
     }),
     createVessel: builder.mutation<
       Vessel,
@@ -44,6 +46,7 @@ export const vesselApi = createApi({
         method: 'POST',
         body,
       }),
+      invalidatesTags: ['Vessels', 'Vessel'],
     }),
     updateVessel: builder.mutation<
       Vessel,
@@ -54,7 +57,8 @@ export const vesselApi = createApi({
         method: 'PUT',
         body,
       }),
-    }),
+      invalidatesTags: ['Vessels', 'Vessel'],
+      }),
     deleteVessel: builder.mutation<
       void,
       string
@@ -63,6 +67,7 @@ export const vesselApi = createApi({
         url: `/vessels/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Vessels', 'Vessel'],
     }), 
     getVesselById: builder.query<
       Vessel,
@@ -72,6 +77,7 @@ export const vesselApi = createApi({
         url: `/vessels/${id}`,
         method: 'GET',
       }),
+      providesTags: ['Vessel'],
     }),
   }),
 })

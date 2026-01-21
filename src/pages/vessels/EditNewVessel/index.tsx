@@ -22,7 +22,7 @@ export const EditVesselModal = ({ toggleModal, setToggleModal, vessel }: EditVes
 
   const handleUpdateVessel = useCallback((data: VesselFormValues) => {
     updateVessel({
-      id: String(vessel.id ?? ""),
+      id: Number(vessel.id as string),
       ...data,
     }).unwrap().then(() => {
       setToggleModal(false)

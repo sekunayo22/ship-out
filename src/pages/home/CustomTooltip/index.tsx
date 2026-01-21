@@ -1,4 +1,3 @@
-import type { TooltipProps } from "recharts"
 import { CustomTooltipContainer, CustomTooltipLabel } from "./styles"
 
 type HomeTooltipPayload = {
@@ -10,7 +9,7 @@ export const CustomTooltip = ({
   payload,
   label,
   active,
-}: TooltipProps<number, string>) => {
+}: any) => {
   if (!active || !payload || !payload.length) return null
   const payloadData = payload[0]?.payload as HomeTooltipPayload | undefined
 

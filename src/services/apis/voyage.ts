@@ -8,12 +8,14 @@ export const voyageApi = createApi({
     }),
     refetchOnMountOrArgChange: true,
     keepUnusedDataFor: 60,
+    tagTypes: ['Voyages'],
     endpoints: builder => ({
         getVoyages: builder.query<Voyage[], void>({
             query: () => ({
                 url: '/voyages',
                 method: 'GET',
             }),
+            providesTags: ['Voyages'],
         })
     })
 })
