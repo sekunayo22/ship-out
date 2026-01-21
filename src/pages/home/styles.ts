@@ -94,8 +94,8 @@ export const TableSectionHeader = styled.div`
   align-items: center;
 
   & svg path { 
-    fill: none;
-    stroke: ${black};
+    fill: none !important;
+    stroke: ${black} !important;
   }
 `
 export const TableSectionHeaderTitle = styled.h2`

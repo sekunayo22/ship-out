@@ -4,7 +4,7 @@ import { CardContainer, CardDescription, CardHeader, CardOptions, CardTitle } fr
 
 interface CardProps {
   title?: string
-  description?: string
+  description?: string | number
   percentage?: {
     value: number
     status: 'up' | 'down'

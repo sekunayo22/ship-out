@@ -20,13 +20,12 @@ import type { IconNames } from "../../assets/icons/iconTypes"
 import type { ButtonVariant } from "../../types/component"
 import { css } from "@emotion/css"
 import { useDeleteAllocationRouteMutation, useGetAllocationRoutesQuery } from "../../services/apis/allocationRoute"
-import Loader from "../../components/Loader"
 
 export const AllocationRoutes = () => {
   const [page, setPage] = useState(0)
   const [pageSize, setPageSize] = useState(10)
   const allocationRoutesTableRef = useRef<HTMLDivElement>(null)
-  const [selectedAllocationRoutes, setSelectedAllocationRoutes] = useState<string[]>([])
+  const [selectedAllocationRoutes, setSelectedAllocationRoutes] = useState<number[]>([])
   const [selectedAllocationRoute, setSelectedAllocationRoute] = useState<{ [key: string]: string | number | null | undefined }>({})
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
   const [openViewModal, setOpenViewModal] = useState(false)
@@ -39,7 +38,7 @@ export const AllocationRoutes = () => {
       console.error(error)
     })
   }, [deleteAllocationRoute, selectedAllocationRoute])
-    const handleAllocationRouteCheck = useCallback((allocationRouteId: string) => {
+    const handleAllocationRouteCheck = useCallback((allocationRouteId: number) => {
     setSelectedAllocationRoutes(prev =>
       prev.includes(allocationRouteId)
         ? prev.filter(id => id !== allocationRouteId)
@@ -54,12 +53,16 @@ export const AllocationRoutes = () => {
         : (allocationRoutes?.map(allocationRoute => allocationRoute.id) ?? [])
     )
   }, [allocationRoutes])
+
   
   const columns = useMemo<ColumnDef<AllocationRoute>[]>(() => [
     {
       header: () => (
         <Checkbox
-          isChecked={selectedAllocationRoutes.length > 0 && selectedAllocationRoutes.length === (allocationRoutes?.length ?? 0)}
+          isChecked={
+            selectedAllocationRoutes.length > 0 &&
+            selectedAllocationRoutes.length === (allocationRoutes?.length ?? 0)
+          }
           handleCheck={handleToggleAllAllocationRoutes}
         />
       ),
@@ -68,8 +71,8 @@ export const AllocationRoutes = () => {
       cell: (info: CellContext<AllocationRoute, unknown>) => {
         return (
           <Checkbox
-            isChecked={selectedAllocationRoutes.includes(String(info.getValue()))}
-            handleCheck={() => handleAllocationRouteCheck(String(info.getValue()))}
+            isChecked={selectedAllocationRoutes.includes(info.getValue() as number)}
+            handleCheck={() => handleAllocationRouteCheck(info.getValue() as number)}
           />
         )
       },
@@ -141,7 +144,7 @@ export const AllocationRoutes = () => {
   }, [page, totalPages])
 
   return (
-    <Layout isLoading={isLoading || !allocationRoutes?.length}>
+    <Layout isLoading={isLoading}>
       <AllocationRoutesContainer>
         <MainHeaderContainer>
           <MainHeader>

@@ -1,5 +1,5 @@
 export type Voyage = {
-    id: string
+    id: number
     name: string
     voyage: string
     serviceString: string

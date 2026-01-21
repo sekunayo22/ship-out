@@ -24,21 +24,26 @@ import Button from "../../components/Button";
 import { Card } from "../../components/Card";
 import { useGetVoyagesQuery } from "../../services/apis/voyage";
 import { useGetAllocationRoutesQuery } from "../../services/apis/allocationRoute";
-import Loader from "../../components/Loader";
+import { useGetBookingsQuery } from "../../services/apis/booking";
+import { useGetVesselsQuery } from "../../services/apis/vessel";
 
 export const Home = () => {
   const { data: voyages, isLoading: voyagesLoading } = useGetVoyagesQuery()
   const {data: allocationRoutes, isLoading: allocationRoutesLoading} = useGetAllocationRoutesQuery()
-  
+  const {data: bookings, isLoading: bookingsLoading} = useGetBookingsQuery()
+  const {data: vessels, isLoading: vesselsLoading} = useGetVesselsQuery()
+
   const teuAllocations = useMemo(() => {
     return Array.from({ length: 7 }, (_, index) => {
       return {
         vessel: allocationRoutes?.[index]?.vessel,
         utilisation: allocationRoutes?.[index]?.utilization,
-        outstandingCommitted: allocationRoutes?.[index]?.outstandingCommitted,
+        outstandingCommitted: allocationRoutes?.[index]?.outstandingCommited,
       }
     })
   }, [allocationRoutes])
+
+  console.log(teuAllocations)
 
   const totalPages = Math.max(1, Math.ceil((voyages?.length ?? 0) / 5))
 
@@ -46,10 +51,6 @@ export const Home = () => {
     {
       header: 'Name',
       accessorKey: 'name',
-    },
-    {
-      header: 'Voyage',
-      accessorKey: 'voyage',
     },
     {
       header: 'Service String',
@@ -61,8 +62,32 @@ export const Home = () => {
     },
   ], [])
 
+  const totalVessels = useMemo(() => {
+    return vessels?.length ?? 0
+  }, [vessels])
+  const totalBookings = useMemo(() => {
+    return bookings?.length ?? 0
+  }, [bookings])
+
+  const totalTEUAllocated = useMemo(() => {
+    return bookings?.reduce((acc, curr) => acc + curr.teu, 0) ?? 0
+  }, [bookings])
+
+  const totalTeuUtilisation = useMemo(() => {
+    return allocationRoutes?.reduce((acc, curr) => acc + curr.utilization, 0) ?? 0
+  }, [allocationRoutes])
+
+  const isLoading = useMemo(() => {
+    return voyagesLoading || allocationRoutesLoading || bookingsLoading || vesselsLoading
+  }, [voyagesLoading, allocationRoutesLoading, bookingsLoading, vesselsLoading])
+
+  const totalTeuUtilisationPercentage = useMemo(() => {
+    return Math.round(((totalTeuUtilisation - totalTEUAllocated) / totalTEUAllocated) * 100) % 100
+  }, [totalTeuUtilisation, totalTEUAllocated])
+
+
   return (
-    <Layout isLoading={voyagesLoading || allocationRoutesLoading || !voyages?.length || !allocationRoutes?.length}>
+    <Layout isLoading={isLoading}>
       <HomeContainer>
         <MainHeaderContainer>
           <MainHeader>
@@ -71,9 +96,9 @@ export const Home = () => {
           </MainHeader>
         </MainHeaderContainer>
         <CardContainer>
-          <Card title="Total Vessels" description="50.8K" percentage={{ value: 28.4, status: 'up' }} />
-          <Card title="Total Bookings" description="23.6K" percentage={{ value: 12.6, status: 'down' }} />
-          <Card title="Total TEU Allocated" description="736" percentage={{ value: 3.1, status: 'up' }} />
+          <Card title="Total Vessels" description={totalVessels} percentage={{ value: 28.4, status: 'up' }} />
+          <Card title="Total Bookings" description={totalBookings} percentage={{ value: 12.6, status: 'down' }} />
+          <Card title="Total TEU Allocated" description={totalTEUAllocated} percentage={{ value: 3.1, status: 'up' }} />
         </CardContainer>
               <BarChart barGap={16} style={{ width: '100%', maxHeight: '70vh', aspectRatio: 1.618 }} responsive data={teuAllocations}>
                 <CartesianGrid vertical={false} />
@@ -105,7 +130,7 @@ export const Home = () => {
             <TableSection>
               <Table
                 data={{
-                  content: voyages,
+                  content: voyages?.slice(0, 5),
                   totalPages,
                   totalElements: voyages?.length,
                 }}
@@ -123,8 +148,8 @@ export const Home = () => {
                   <PieChart>
                     <Pie
                       data={[
-                        { name: 'Utilisation', value: 70 },
-                        { name: 'Remaining', value: 30 },
+                        { name: 'Utilisation', value: totalTeuUtilisationPercentage },
+                        { name: 'Remaining', value: 100 - totalTeuUtilisationPercentage },
                       ]}
                       dataKey="value"
                       nameKey="name"
@@ -134,7 +159,7 @@ export const Home = () => {
                     >
                       <Cell fill="#EE6C4D" />
                       <Cell fill="#ECEDEE" />
-                      <Label fontSize={36} fontWeight={500} value={`70%`} fontFamily={Archivo} position="center" fill="#292D30s" />
+                      <Label fontSize={36} fontWeight={500} value={`${totalTeuUtilisationPercentage}%`} fontFamily={Archivo} position="center" fill="#292D30s" />
                     </Pie>
                   </PieChart>
                 </ResponsiveContainer>

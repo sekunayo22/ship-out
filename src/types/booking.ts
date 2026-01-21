@@ -1,5 +1,5 @@
 export type Booking = {
-    id: string
+    id: number
     etdOrigin: string
     reference: string
     trans: string
@@ -11,4 +11,5 @@ export type Booking = {
     ata: string
     vessel: string
     voyageFlight: string
+    teu: number
 }

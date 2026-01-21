@@ -1,5 +1,5 @@
 export type AllocationRoute = {
-    id: string
+    id: number
     serviceString: string
     voyage: string
     vessel: string
@@ -8,6 +8,6 @@ export type AllocationRoute = {
     quantity: number
     unit: string
     utilization: number
-    outstandingCommitted: number
+    outstandingCommited: number
     etdWeek: number
 }

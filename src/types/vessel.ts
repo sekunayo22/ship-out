@@ -1,5 +1,5 @@
 export type Vessel = {
-    id: string
+    id: number
     name: string
     loop: string
     port: string

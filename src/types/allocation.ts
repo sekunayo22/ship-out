@@ -1,5 +1,5 @@
 export type Allocation = {
-    id: string
+    id: number
     serviceString: string
     voyage: string
     vessel: string

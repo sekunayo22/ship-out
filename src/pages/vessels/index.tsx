@@ -23,7 +23,6 @@ import type { IconNames } from "../../assets/icons/iconTypes"
 import type { ButtonVariant } from "../../types/component"
 import { css } from "@emotion/css"
 import { useDeleteVesselMutation, useGetVesselsQuery } from "../../services/apis/vessel"
-import Loader from "../../components/Loader"
 
 export const Vessels = () => {
   const { data: vessels, isLoading } = useGetVesselsQuery()
@@ -31,7 +30,7 @@ export const Vessels = () => {
   const [page, setPage] = useState(0)
   const [pageSize, setPageSize] = useState(10)
   const tableSectionRef = useRef<HTMLDivElement>(null)
-  const [selectedVessels, setSelectedVessels] = useState<string[]>([])
+  const [selectedVessels, setSelectedVessels] = useState<number[]>([])
   const [openCreateNewVesselModal, setOpenCreateNewVesselModal] = useState(false)
   const [openViewModal, setOpenViewModal] = useState(false)
   const [openEditNewVesselModal, setOpenEditNewVesselModal] = useState(false)
@@ -47,7 +46,7 @@ export const Vessels = () => {
         console.error(error)
       })
   }, [deleteVessel, selectedVessel.id])
-  const handleVesselCheck = useCallback((vesselId: string) => {
+  const handleVesselCheck = useCallback((vesselId: number) => {
     setSelectedVessels(prev =>
       prev.includes(vesselId)
         ? prev.filter(id => id !== vesselId)
@@ -76,8 +75,8 @@ export const Vessels = () => {
       cell: (info: CellContext<Vessel, unknown>) => {
         return (
           <Checkbox
-            isChecked={selectedVessels.includes(String(info.getValue()))}
-            handleCheck={() => handleVesselCheck(String(info.getValue()))}
+            isChecked={selectedVessels.includes(info.getValue() as number)}
+            handleCheck={() => handleVesselCheck(info.getValue() as number)}
           />
         )
       },
@@ -160,7 +159,7 @@ export const Vessels = () => {
   }, [page, totalPages])
 
   return (
-    <Layout isLoading={isLoading || !vessels?.length}>
+    <Layout isLoading={isLoading}>
       <VesselsContainer>
         <MainHeaderContainer>
           <MainHeader>

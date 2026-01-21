@@ -20,13 +20,12 @@ import type { IconNames } from "../../assets/icons/iconTypes"
 import type { ButtonVariant } from "../../types/component"
 import { css } from "@emotion/css"
 import { useDeleteBookingMutation, useGetBookingsQuery } from "../../services/apis/booking"
-import Loader from "../../components/Loader"
 
 export const Bookings = () => {
   const [page, setPage] = useState(0)
   const [pageSize, setPageSize] = useState(10)
   const bookingsTableRef = useRef<HTMLDivElement>(null)
-  const [selectedBookings, setSelectedBookings] = useState<string[]>([])
+  const [selectedBookings, setSelectedBookings] = useState<number[]>([])
   const [selectedBooking, setSelectedBooking] = useState<{ [key: string]: string | number | null | undefined }>({})
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
   const [openViewModal, setOpenViewModal] = useState(false)
@@ -41,7 +40,7 @@ export const Bookings = () => {
     })
   }, [deleteBooking, selectedBooking])
 
-    const handleBookingCheck = useCallback((bookingId: string) => {
+    const handleBookingCheck = useCallback((bookingId: number) => {
     setSelectedBookings(prev =>
       prev.includes(bookingId)
         ? prev.filter(id => id !== bookingId)
@@ -70,8 +69,8 @@ export const Bookings = () => {
       cell: (info: CellContext<Booking, unknown>) => {
         return (
           <Checkbox
-            isChecked={selectedBookings.includes(String(info.getValue()))}
-            handleCheck={() => handleBookingCheck(String(info.getValue()))}
+            isChecked={selectedBookings.includes(info.getValue() as number)}
+            handleCheck={() => handleBookingCheck(info.getValue() as number)}
           />
         )
       },
@@ -143,7 +142,7 @@ export const Bookings = () => {
   }, [page, totalPages])
 
   return (
-    <Layout isLoading={isLoading || !bookings?.length}>
+    <Layout isLoading={isLoading}>
       <BookingsContainer>
         <MainHeaderContainer>
           <MainHeader>

@@ -10,6 +10,7 @@ export default defineConfig({
         target: 'https://ship-out-be.onrender.com',
         changeOrigin: true,
         secure: true,
+        rewrite: path => path.replace(/^\/api/, ''),
       },
     },
   },

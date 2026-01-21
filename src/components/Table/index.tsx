@@ -55,7 +55,7 @@ interface TableProps<TData extends RowData> {
   }[]
   handlePageChange?: (page: number) => void
   components?: React.ReactNode
-  selectedItems?: string[]
+  selectedItems?: number[]
 }
 
 const Table = <TData extends RowData>({
@@ -146,7 +146,7 @@ const Table = <TData extends RowData>({
                               : undefined
                           }
                           isSelected={selectedItems?.includes(
-                            String((row.original as { id?: string | number })?.id ?? '')
+                            (row.original as { id?: number })?.id ?? 0
                           )}
                         >
                           {flexRender(
